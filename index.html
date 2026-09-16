@@ -26,7 +26,7 @@ progress{width:260px;accent-color:#65c6ad} #retry{display:none}
 </head>
 <body>
 <div id="safe"><canvas id="canvas" tabindex="0" aria-label="圖泊山遊戲畫面"></canvas></div>
-<section id="loading"><h1>圖泊山</h1><p>雲起築基 · iPhone 直向試玩版</p><label for="quality">畫面清晰度</label><select id="quality"><option value="1.5">省電 · 1.5 倍</option><option value="2" selected>清晰 · 2 倍</option><option value="3">高畫質 · 最高 3 倍</option></select><p id="status" role="status">建議使用 Safari、一般瀏覽模式。首次載入請保持網頁開啟。</p><progress id="progress" hidden></progress><button id="start">進入遊戲</button><button id="retry" onclick="location.reload()">重新載入</button><p>進度儲存在此瀏覽器。清除網站資料可能遺失存檔；本版沒有雲端同步。</p><p id="build">版本 20260915-191007</p></section>
+<section id="loading"><h1>圖泊山</h1><p>雲起築基 · iPhone 直向試玩版</p><label for="quality">畫面清晰度</label><select id="quality"><option value="1.5">省電 · 1.5 倍</option><option value="2" selected>清晰 · 2 倍</option><option value="3">高畫質 · 最高 3 倍</option></select><p id="status" role="status">建議使用 Safari、一般瀏覽模式。首次載入請保持網頁開啟。</p><progress id="progress" hidden></progress><button id="start">進入遊戲</button><button id="retry" onclick="location.reload()">重新載入</button><p>進度儲存在此瀏覽器。清除網站資料可能遺失存檔；本版沒有雲端同步。</p><p id="build">版本 20260916-094518</p></section>
 <script src="index.js"></script>
 <script>
 const canvas=document.getElementById('canvas'),safe=document.getElementById('safe');
@@ -54,7 +54,7 @@ document.getElementById('start').addEventListener('click',async()=>{
  try {
   if(location.protocol==='file:')throw new Error('請透過網站網址開啟，不能直接點開 HTML 檔。');
   if(typeof Engine==='undefined')throw new Error('遊戲引擎未載入，請確認網路與網站檔案。');
-  const engine=new Engine({"args":[],"canvasResizePolicy":0,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":68225656,"index.wasm":37695054},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4});
+  const engine=new Engine({"args":[],"canvasResizePolicy":0,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":68233412,"index.wasm":37695054},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4});
   await engine.startGame({canvas,canvasResizePolicy:0,onProgress:(current,total)=>{
    if(total>0){progress.max=total;progress.value=current;statusLabel.textContent='載入 '+Math.floor(current/total*100)+'%';}
   }});
