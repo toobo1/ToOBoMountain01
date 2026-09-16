@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a141c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>圖泊山 · 雲起築基</title>
+<style>
+@font-face {font-family:CultivationSerif;src:url('CultivationSerif-subset.woff2') format('woff2');font-display:swap}
+html,body {margin:0;width:100%;height:100%;overflow:hidden;background:#0a141c;color:#d9ece5;font-family:CultivationSerif,serif;overscroll-behavior:none}
+#safe {position:fixed;inset:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);display:flex;align-items:center;justify-content:center}
+canvas {display:block;outline:none;touch-action:none}
+/* Godot's virtual keyboard uses hidden native text fields. iOS zooms fields
+   below 16 CSS px, even when invisible. Preserve user accessibility zoom. */
+input,textarea {font-size:16px !important;line-height:normal !important}
+#loading {position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;background:linear-gradient(transparent,rgba(6,22,26,.88)),url('title_tuboshan.png') center/cover,#0a141c;padding:28px 28px max(28px,env(safe-area-inset-bottom));gap:14px;text-align:center}
+h1 {color:#e4d4ae;font-size:38px;letter-spacing:.2em;margin:0} p {max-width:340px;line-height:1.7;margin:0} button {font:600 18px CultivationSerif,serif;background:rgba(15,25,25,.7);border:1px solid #c4a468;color:#eeddb3;border-radius:4px;min-height:52px;padding:12px 32px}
+progress{width:260px;accent-color:#65c6ad} #retry{display:none}
+#build {font-size:12px;color:#8aa39d;letter-spacing:.08em;margin:0;opacity:.85}
+#quality {font:18px CultivationSerif,serif;min-height:44px;padding:6px 12px;color:#eeddb3;background:#10292b;border:1px solid #c4a468;border-radius:4px}
+</style>
+<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
+<link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
+
+</head>
+<body>
+<div id="safe"><canvas id="canvas" tabindex="0" aria-label="圖泊山遊戲畫面"></canvas></div>
+<section id="loading"><h1>圖泊山</h1><p>雲起築基 · iPhone 直向試玩版</p><label for="quality">畫面清晰度</label><select id="quality"><option value="1.5">省電 · 1.5 倍</option><option value="2" selected>清晰 · 2 倍</option><option value="3">高畫質 · 最高 3 倍</option></select><p id="status" role="status">建議使用 Safari、一般瀏覽模式。首次載入請保持網頁開啟。</p><progress id="progress" hidden></progress><button id="start">進入遊戲</button><button id="retry" onclick="location.reload()">重新載入</button><p>進度儲存在此瀏覽器。清除網站資料可能遺失存檔；本版沒有雲端同步。</p><p id="build">版本 20260915-191007</p></section>
+<script src="index.js"></script>
+<script>
+const canvas=document.getElementById('canvas'),safe=document.getElementById('safe');
+const quality=document.getElementById('quality');
+try {const saved=localStorage.getItem('tuboshan_pixel_ratio');if(['1.5','2','3'].includes(saved))quality.value=saved;} catch (_) {}
+quality.addEventListener('change',()=>{try {localStorage.setItem('tuboshan_pixel_ratio',quality.value);} catch (_) {} fit();});
+function fit(){
+ const r=safe.getBoundingClientRect();
+ const scale=Math.min(r.width/480,r.height/900);
+ const w=Math.max(1,Math.floor(480*scale)),h=Math.max(1,Math.floor(900*scale));
+ // UI remains 480x900 logical units; only increase physical pixels, not layout size.
+ const dpr=Math.min(window.devicePixelRatio||1,Number(quality.value)||2);
+ canvas.style.width=w+'px';canvas.style.height=h+'px';
+ const pixelWidth=Math.round(w*dpr),pixelHeight=Math.round(h*dpr);
+ if(canvas.width!==pixelWidth)canvas.width=pixelWidth;
+ if(canvas.height!==pixelHeight)canvas.height=pixelHeight;
+}
+new ResizeObserver(fit).observe(safe);window.addEventListener('resize',fit);fit();
+// Refit after Safari dismisses its keyboard; don't resize the game to keyboard height.
+window.visualViewport?.addEventListener('resize',()=>requestAnimationFrame(fit));
+document.addEventListener('focusout',()=>setTimeout(()=>{window.scrollTo(0,0);fit();},300));
+const statusLabel=document.getElementById('status'),progress=document.getElementById('progress');
+document.getElementById('start').addEventListener('click',async()=>{
+ document.getElementById('start').hidden=true;progress.hidden=false;statusLabel.textContent='正在載入場景與字型…';
+ try {
+  if(location.protocol==='file:')throw new Error('請透過網站網址開啟，不能直接點開 HTML 檔。');
+  if(typeof Engine==='undefined')throw new Error('遊戲引擎未載入，請確認網路與網站檔案。');
+  const engine=new Engine({"args":[],"canvasResizePolicy":0,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":68225656,"index.wasm":37695054},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4});
+  await engine.startGame({canvas,canvasResizePolicy:0,onProgress:(current,total)=>{
+   if(total>0){progress.max=total;progress.value=current;statusLabel.textContent='載入 '+Math.floor(current/total*100)+'%';}
+  }});
+  document.getElementById('loading').style.display='none';canvas.focus();fit();
+ }catch(error){progress.hidden=true;statusLabel.textContent='無法啟動：'+error.message+' 請使用支援 WebGL 2 的 Safari，或更新 iOS 後再試。';document.getElementById('retry').style.display='block';}
+});
+</script>
+</body>
+</html>
+
