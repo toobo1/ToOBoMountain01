@@ -1,0 +1,32 @@
+{
+	"bamboo": {
+		"bytes": 2435868,
+		"file": "bamboo-2d670ba2c80024ca.pck",
+		"sha256": "2d670ba2c80024ca508a742007706d21d18dd3ac63d947e46cdfe7a82e942e5c"
+	},
+	"incense": {
+		"bytes": 1252076,
+		"file": "incense-3ccd0182f7ed4be9.pck",
+		"sha256": "3ccd0182f7ed4be99f85327b836dbc02dcd60f5d5430cc14a794088eb814aef2"
+	},
+	"mine": {
+		"bytes": 758180,
+		"file": "mine-6b41b0b82eca0893.pck",
+		"sha256": "6b41b0b82eca0893761382cb136cbd6b8fa2b1d898cf32ef1a301f3497f4ebcb"
+	},
+	"moon": {
+		"bytes": 986888,
+		"file": "moon-b31cc25535b9c339.pck",
+		"sha256": "b31cc25535b9c33950ac451946f7f0f9552aa0216a6561725ad78fa3f4f37fe1"
+	},
+	"star": {
+		"bytes": 1748856,
+		"file": "star-1cc27a0575ea01bc.pck",
+		"sha256": "1cc27a0575ea01bc7798cd1c5d034c077f822da450807f6c6d0b8df0bb960b8b"
+	},
+	"thunder": {
+		"bytes": 759544,
+		"file": "thunder-5b1755614ca20b38.pck",
+		"sha256": "5b1755614ca20b3809ff792086e83b33b6ca4ead1c48bf64194d81e2b3926e64"
+	}
+}
